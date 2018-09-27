@@ -1,0 +1,85 @@
+<!-- Main Toolbar of an App -->
+
+<mat-toolbar color="primary">
+  <span class="demo-toolbar"></span>
+</mat-toolbar>
+
+<!-- Card container that binds all together -->
+<mat-card>
+  <!-- Title of an Card -->
+  <mat-card-title>
+    <h2>Fill in the following form <br> to make your withdrawal</h2>
+  </mat-card-title>
+
+  <!-- Actual content starts from here -->
+  <mat-card-content>
+    <form [formGroup]="withForm" (ngSubmit)="onFormSubmit(withForm.value)">
+      <table>
+        <tr>
+          <td>
+            <mat-form-field class="demo-full-width">
+              <input formControlName="FirstName" matInput placeholder="First Name">
+            </mat-form-field>
+            <mat-error>
+              <span *ngIf="!withForm.get('FirstName').valid && withForm.get('FirstName').touched">Please enter First Name !!!</span>
+            </mat-error>
+          </td>
+          <td>
+            <mat-form-field class="demo-full-width">
+              <input formControlName="LastName" matInput placeholder="Last Name">
+            </mat-form-field>
+            <mat-error>
+              <span *ngIf="!withForm.get('LastName').valid && withForm.get('LastName').touched">Please enter Last Name</span>
+            </mat-error>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <mat-form-field class="demo-full-width">
+              <input formControlName="idNumber" matInput placeholder="idNumber">
+            </mat-form-field>
+            <mat-error>
+              <span *ngIf="!withForm.get('idNumber').valid && withForm.get('idNumber').touched">Please enter proper ID number</span>
+            </mat-error>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <mat-form-field class="demo-full-width">
+              <input formControlName="Email" matInput placeholder="Email">
+              <mat-error>
+                <span *ngIf="!withForm.get('Email').valid && withForm.get('Email').touched">Please try again use like : demo@demo.com</span>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <mat-form-field class="demo-full-width">
+              <input formControlName="AmountToWithdraw" type="number" step="50" value="50" matInput placeholder="Amount To Withdraw">
+            </mat-form-field>
+            <mat-error>
+              <span *ngIf="!withForm.get('AmountToWithdraw').valid && withForm.get('AmountToWithdraw').touched">Amount is required</span>
+            </mat-error>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-slide-toggle formControlName="IsAccepted" (change)="onChange($event)">Accept Terms & Conditions</mat-slide-toggle>
+          </td>
+          <td class="content-center">
+            <button mat-raised-button color="accent" type= 'submit' [disabled]="!withForm.valid || IsAccepted === 0">Submit</button>
+
+          </td>
+        <tr>
+          <td>
+          </td>
+        <td>
+          <p></p>
+        </td>
+        </tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>
