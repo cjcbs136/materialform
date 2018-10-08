@@ -1,35 +1,38 @@
-import {Injectable, NgModule} from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { AppComponent } from './app.component';
-import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpClientModule} from '@angular/common/http';
-import {Router, RouterLinkWithHref, RouterLink} from '@angular/router';
+import {BrowserModule} from '@angular/platform-browser';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {ReactiveFormsModule, FormBuilder} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {AppComponent} from './app.component';
+import {UserSuccessComponent} from './user-success/user-success.component';
+import {ErrorInterceptor, fakeBackendProvider, JwtInterceptor} from './_helpers';
 import {
   MatButtonModule,
-  MatMenuModule,
-  MatIconModule,
   MatCardModule,
-  MatFormFieldModule,
-  MatInputModule,
   MatDatepickerModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatMenuModule,
   MatNativeDateModule,
+  MatOptionModule,
   MatRadioModule,
   MatSelectModule,
-  MatOptionModule,
-  MatSlideToggleModule, ErrorStateMatcher, ShowOnDirtyErrorStateMatcher, MatSliderModule
+  MatSliderModule,
+  MatSlideToggleModule
 } from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTableModule} from '@angular/material/table';
-import {Observable} from 'rxjs';
+import {UserService} from './_helpers';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { WithdrawalEditorComponent } from './withdrawal-editor/withdrawal-editor.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, UserSuccessComponent, WithdrawalEditorComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     MatSliderModule,
     MatTableModule,
@@ -47,7 +50,6 @@ import {Observable} from 'rxjs';
     MatSelectModule,
     MatOptionModule,
     MatSlideToggleModule,
-    HttpClientModule,
   ],
   exports: [
     MatButtonModule,
@@ -68,25 +70,14 @@ import {Observable} from 'rxjs';
     MatSliderModule,
   ],
   providers: [
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
+    UserService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider,
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-@Injectable()
-export class JwtInterceptor implements HttpInterceptor {
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // add authorization header with jwt token if available
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser && currentUser.token) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${currentUser.token}`
-        }
-      });
-    }
-
-    return next.handle(request);
-  }
-}

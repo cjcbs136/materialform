@@ -1,68 +1,61 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule, NgForm, FormArray} from '@angular/forms';
+
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserService} from './_helpers';
 
 @Component ( {
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 } )
 
 export class AppComponent {
 
-  constructor(private fb: FormBuilder) {
+  withForm = new FormGroup ( {
+    firstName = new FormControl (),
+    lastName = new FormControl (),
+    idNumber = new FormControl (),
+    email = new FormControl (),
+    amountToWithdraw = new FormControl (),
+    isAccepted = new FormControl ()
+  } );
 
 
-    // To initialize FormGroup
-    this.withForm = fb.group ( {
-      'FirstName': [null, Validators.required],
-      'LastName': [null, Validators.required],
-      'idNumber': [null, Validators.compose ( [Validators.required, Validators.minLength ( 13 ), Validators.maxLength ( 14 )] )],
-      'Email': [null, Validators.compose ( [Validators.required, Validators.email] )],
-      'AmountToWithdraw': [null, Validators.required],
-      'IsAccepted': [null],
-      'token': 'fake-jwt-token'
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private userService: UserService) {
+    this.createForm ();
+  }
+
+  createForm() {
+    this.withForm = this.fb.group ( {
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      idNumber: ['', Validators.required],
+      email: ['', Validators.required],
+      amountW: ['', Validators.required],
+      isAccepted: ['', Validators.requiredTrue]
+
     } );
-    this.title = 'app';
   }
-
-  withForm: FormGroup;
-  FirstName = '';
-  LastName = '';
-  Email = '';
-  idNumber = '';
-  AmountToWithdraw = '';
-  IsAccepted = 0;
-  private title: string;
-
-
-  // On Change event of Toggle Button
-  onChange(event: any) {
-    if (event.checked === true) {
-      this.IsAccepted = 1;
-    } else {
-      this.IsAccepted = 0;
-    }
-  }
-
-  onFormSubmit(withForm: NgForm) {
-    if (this.withForm.valid) {
-      console.log('Form Submitted!' + this.makeid());
-    console.log ( withForm );
-    this.withForm.markAsUntouched();
-    this.withForm.markAsPristine();
-    this.withForm.reset();
-    this.withForm.clearValidators();
-  }
-  }
-    makeid() {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < 5; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-  }
-
 }
+// convenience getter for easy access to form fields
+//   get f() {
+//     return this.withForm.controls;
+//   }
+//
+//   // On Change event of Toggle Button
+//   onChange(event: any) {
+//     if (event.checked === true) {
+//       this.isAccepted = 1;
+//     } else {
+//       this.isAccepted = 0;
+//     }
+//   }
+//
+//   onFormSubmit(form: NgForm) {
+//     console.log ( form );
+//   }
+// }
