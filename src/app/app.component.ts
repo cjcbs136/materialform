@@ -1,36 +1,37 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from './_helpers';
 
-import {ActivatedRoute, Router} from '@angular/router';
-import {UserService} from './_helpers';
-
-@Component ( {
+@Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-} )
+})
 
 export class AppComponent {
-
-  withForm = new FormGroup ( {
-    firstName = new FormControl (),
-    lastName = new FormControl (),
-    idNumber = new FormControl (),
-    email = new FormControl (),
-    amountToWithdraw = new FormControl (),
-    isAccepted = new FormControl ()
-  } );
-
+  user: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService) {
-    this.createForm ();
+
+    this.user = new FormGroup({
+      firstName: new FormControl(),
+      lastName: new FormControl(),
+      idNumber: new FormControl(),
+      email: new FormControl(),
+      amountToWithdraw: new FormControl(),
+      isAccepted: new FormControl()
+    });
+
+    this.createForm();
   }
 
   createForm() {
-    this.withForm = this.fb.group ( {
+    this.user = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       idNumber: ['', Validators.required],
@@ -38,7 +39,7 @@ export class AppComponent {
       amountW: ['', Validators.required],
       isAccepted: ['', Validators.requiredTrue]
 
-    } );
+    });
   }
 }
 // convenience getter for easy access to form fields
