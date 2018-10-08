@@ -6,5 +6,4 @@
     lastName: string;
     amountToWithdraw: number;
     isAccepted: boolean;
-
 }
