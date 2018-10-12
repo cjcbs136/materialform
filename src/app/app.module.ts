@@ -1,10 +1,11 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {LOCALE_ID, NgModule} from '@angular/core';
-import {ReactiveFormsModule, FormBuilder} from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
-import {UserSuccessComponent} from './user-success/user-success.component';
-import {ErrorInterceptor, fakeBackendProvider, JwtInterceptor} from './_helpers';
+import {AppRoutingModule} from './app-routing.module';
+import {MessagesComponent} from "./messages/messages.component";
+import {ErrorInterceptor, fakeBackendProvider, JwtInterceptor, UserService} from './_helpers';
 import {
   MatButtonModule,
   MatCardModule,
@@ -22,16 +23,17 @@ import {
 } from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTableModule} from '@angular/material/table';
-import {UserService} from './_helpers';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { WithdrawalEditorComponent } from './withdrawal-editor/withdrawal-editor.component';
+import {WithdrawalEditorComponent} from './withdrawal-editor/withdrawal-editor.component';
+import {MessageService} from "./_helpers/message.service";
 
 @NgModule({
   declarations: [
-    AppComponent, UserSuccessComponent, WithdrawalEditorComponent
+    AppComponent, WithdrawalEditorComponent, MessagesComponent
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     MatSliderModule,
@@ -71,6 +73,7 @@ import { WithdrawalEditorComponent } from './withdrawal-editor/withdrawal-editor
   ],
   providers: [
     UserService,
+    MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

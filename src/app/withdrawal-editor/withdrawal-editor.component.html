@@ -13,7 +13,8 @@
 
   <!-- Actual content starts from here -->
   <mat-card-content>
-    <form [formGroup]="withForm" (ngSubmit)="onFormSubmit(withForm.value)">
+    <a routerLink="/withdrawal-editor">
+    <form [formGroup]="createUser" (ngSubmit)="onSubmit (createUser.value)">
       <table>
         <tr>
           <td>
@@ -21,7 +22,7 @@
               <input formControlName="firstName" matInput placeholder="First Name">
             </mat-form-field>
             <mat-error>
-              <span *ngIf="!withForm.get('Firstname').valid && withForm.get('FirstName').touched">Please enter First Name !!!</span>
+              <span *ngIf="!createUser.get('Firstname').valid && createUser.get('FirstName').touched">Please enter First Name !!!</span>
             </mat-error>
           </td>
           <td>
@@ -29,7 +30,7 @@
               <input formControlName="lastName" matInput placeholder="Last Name">
             </mat-form-field>
             <mat-error>
-              <span *ngIf="!withForm.get('LastName').valid && withForm.get('LastName').touched">Please enter Last Name</span>
+              <span *ngIf="!createUser.get('LastName').valid && createUser.get('LastName').touched">Please enter Last Name</span>
             </mat-error>
           </td>
         </tr>
@@ -39,7 +40,7 @@
               <input formControlName="idNumber" matInput placeholder="idNumber">
             </mat-form-field>
             <mat-error>
-              <span *ngIf="!withForm.get('idNumber').valid && withForm.get('idNumber').touched">Please enter proper ID number</span>
+              <span *ngIf="!createUser.get('idNumber').valid && createUser.get('idNumber').touched">Please enter proper ID number</span>
             </mat-error>
           </td>
         </tr>
@@ -49,7 +50,7 @@
             <mat-form-field class="demo-full-width">
               <input formControlName="email" matInput placeholder="Email">
               <mat-error>
-                <span *ngIf="!withForm.get('Email').valid && withForm.get('Email').touched">Please try again use like : demo@demo.com</span>
+                <span *ngIf="!createUser.get('Email').valid && createUser.get('Email').touched">Please try again use like : demo@demo.com</span>
               </mat-error>
             </mat-form-field>
           </td>
@@ -60,7 +61,7 @@
               <input formControlName="amountToWithdraw" type="number" step="50" value="50" matInput placeholder="Amount To Withdraw">
             </mat-form-field>
             <mat-error>
-              <span *ngIf="!withForm.get('AmountToWithdraw').valid && withForm.get('AmountToWithdraw').touched">Amount is required</span>
+              <span *ngIf="!createUser.get('AmountToWithdraw').valid && createUser.get('AmountToWithdraw').touched">Amount is required</span>
             </mat-error>
           </td>
         </tr>
@@ -69,8 +70,9 @@
             <mat-slide-toggle formControlName="isAccepted" (change)="onChange($event)">Accept Terms & Conditions</mat-slide-toggle>
           </td>
           <td class="content-center">
-            <button mat-raised-button color="accent" type= 'submit' [disabled]="!withForm.valid || IsAccepted === 0">Submit</button>
-
+            <a routerLink="/message" class="btn btn-link">
+            <button mat-raised-button color="accent" type= 'submit' [disabled]="!user.valid || isAccepted ===  true ">Submit</button>
+            </a>
           </td>
         <tr>
           <td>
@@ -81,5 +83,6 @@
         </tr>
       </table>
     </form>
+    </a>
   </mat-card-content>
 </mat-card>
